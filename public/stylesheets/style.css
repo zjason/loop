@@ -19,3 +19,13 @@ body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
+
+.thumbnail{
+  width: 400px;
+  height: 500px;
+}
+
+.desc {
+  word-wrap: break-word;
+  width: 360px;
+}

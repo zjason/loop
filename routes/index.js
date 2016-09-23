@@ -26,6 +26,7 @@ db.once('open', function() {
 
 // create schema
 var marketSchema = new mongoose.Schema({
+    userid: String,
     item: String,
     description: String,
     price: Number,
@@ -73,18 +74,27 @@ router.post('/post', function (req, res, next) {
 
 /* POST query item */
 router.post('/query', function (req, res, next) {
-    Bmarket.find({type: req.body.type}, function (err, items) {
-        var queryResult;
-        if (items.length){
-            queryResult = items;
-            console.log(items);
-            res.render('index',{ title: 'Bburg Market', data: queryResult, message: "" });
-        }else{
-            console.log('No matching result!');
-            queryResult = [];
-            res.render('index',{ title: 'Bburg Market', data: queryResult, message: "No matching result!" });
-        }
-    });
+    var queryResult;
+    if (req.body.type == "All"){
+        Bmarket.find({}, function (err, items) {
+            if (items.length){
+                queryResult = items;
+                res.render('index',{ title: 'Bburg Market', data: queryResult, message: "" });
+            }
+        });
+    }else {
+        Bmarket.find({type: req.body.type}, function (err, items) {
+            if (items.length) {
+                queryResult = items;
+                console.log(items);
+                res.render('index', {title: 'Bburg Market', data: queryResult, message: ""});
+            } else {
+                console.log('No matching result!');
+                queryResult = [];
+                res.render('index', {title: 'Bburg Market', data: queryResult, message: "No matching result!"});
+            }
+        });
+    }
 });
 
 router.post('/api/photo',function(req,res){
