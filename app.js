@@ -4,12 +4,35 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session')
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var login = require('./routes/login');
 
 var app = express();
+
+// passport setup
+var passport = require('passport');
+
+// used by session
+var sess = {
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {}
+}
+
+// connect to mongoDB
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/Bburg');
+var db = mongoose.connection;
+
+// check mongoDB status
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log("we're connected!");
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,10 +45,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session(sess));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', routes);
 app.use('/users', users);
 app.use('/login', login);
+app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

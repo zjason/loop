@@ -13,17 +13,8 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage }).array('userPhoto',2);
 
-// connect to mongoDB
+// db
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/Bburg');
-var db = mongoose.connection;
-
-// check mongoDB status
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-    console.log("we're connected!");
-});
-
 // create schema
 var marketSchema = new mongoose.Schema({
     userid: String,
@@ -35,20 +26,27 @@ var marketSchema = new mongoose.Schema({
     image_name: String
 });
 
+
 var Bmarket = mongoose.model("Bmarket", marketSchema);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
     var itembucket;
+    var usertab = '';
+    if (!req.user){
+        usertab = "<li><a href='login'>Login/Register</a></li>";
+    }else{
+        usertab = "<li><a href='users'>"+ req.user.username+"</a></li>";
+    }
     Bmarket.find({}, function (err, items) {
         if (items.length){
             itembucket = items;
             console.log(itembucket);
-            res.render('index', { title: 'Bburg Market', data: itembucket, message: "" });
+            res.render('index', { title: 'Bburg Market', usertab: usertab, data: itembucket, message: "" });
         }else{
             console.log("no item in database");
             itembucket = [];
-            res.render('index', { title: 'Bburg Market', data: itembucket, message: "No item in database!" });
+            res.render('index', { title: 'Bburg Market', usertab: usertab, data: itembucket, message: "No item in database!" });
         }
 
     });
