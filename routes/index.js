@@ -1,18 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-var multer = require('multer');
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, './public/images');
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now());
-    }
-})
-
-var upload = multer({ storage: storage }).array('userPhoto',2);
-
 // db
 var mongoose = require('mongoose');
 // create schema
@@ -25,8 +13,6 @@ var marketSchema = new mongoose.Schema({
     type: String,
     image_name: String
 });
-
-
 var Bmarket = mongoose.model("Bmarket", marketSchema);
 
 /* GET home page. */
@@ -36,7 +22,7 @@ router.get('/', function(req, res, next) {
     if (!req.user){
         usertab = "<li><a href='login'>Login/Register</a></li>";
     }else{
-        usertab = "<li><a href='users'>"+ req.user.username+"</a></li>";
+        usertab = "<li><a href='users'>"+ req.user.username+"</a></li>"+"<li><a href='logout'>Logout</a></li>";
     }
     Bmarket.find({}, function (err, items) {
         if (items.length){
@@ -53,18 +39,11 @@ router.get('/', function(req, res, next) {
 
 });
 
-/* POST post item */
-router.post('/post', function (req, res, next) {
-    upload(req,res,function(err) {
-        if(err) {
-            return res.end("Error uploading file.");
-        }else{
-            var newItem = new Bmarket(req.body);
-            newItem.image_name = req.files[0].filename;
-            newItem.save();
-            res.end("File is uploaded");
-        }
-    });
+/* GET logout page */
+// This function will destroy session to logout user
+router.get('/logout', function (req, res, next) {
+    req.session.destroy();
+    res.redirect('/');
 });
 
 /* POST query item */
@@ -92,16 +71,16 @@ router.post('/query', function (req, res, next) {
     }
 });
 
-router.post('/api/photo',function(req,res){
-    upload(req,res,function(err) {
-        //console.log(req.body);
-        //console.log(req.files);
-        if(err) {
-            return res.end("Error uploading file.");
-        }
-        console.log(req.files.fieldname);
-        res.end("File is uploaded");
-    });
-});
+// router.post('/api/photo',function(req,res){
+//     upload(req,res,function(err) {
+//         //console.log(req.body);
+//         //console.log(req.files);
+//         if(err) {
+//             return res.end("Error uploading file.");
+//         }
+//         console.log(req.files.fieldname);
+//         res.end("File is uploaded");
+//     });
+// });
 
 module.exports = router;

@@ -43,8 +43,6 @@ router.get('/', function(req, res, next) {
 /* POST item info */
 router.post('/itempost', function (req, res, next) {
   upload(req,res,function(err) {
-    //console.log(req.body);
-    //console.log(req.files);
     if(err) {
       return res.end("Error uploading file.");
     }else{
@@ -52,7 +50,7 @@ router.post('/itempost', function (req, res, next) {
       newItem.image_name = req.files[0].filename;
       newItem.userid = req.user.id;
       newItem.save();
-      res.end("File is uploaded");
+      res.redirect("/users");
     }
 
   });
