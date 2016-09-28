@@ -56,8 +56,6 @@ router.get('/', function(req, res, next) {
 /* POST post item */
 router.post('/post', function (req, res, next) {
     upload(req,res,function(err) {
-        //console.log(req.body);
-        //console.log(req.files);
         if(err) {
             return res.end("Error uploading file.");
         }else{
@@ -66,7 +64,6 @@ router.post('/post', function (req, res, next) {
             newItem.save();
             res.end("File is uploaded");
         }
-
     });
 });
 

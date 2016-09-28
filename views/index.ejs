@@ -26,24 +26,8 @@
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">Link</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">One more separated link</a></li>
-                        </ul>
-                    </li>
-                </ul>
                 <form class="navbar-form navbar-left">
-                    <div class="row col-xs-6 input-group">
+                    <div class="row input-group">
                                 <div class="input-group-btn search-panel">
                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                         <span id="search_concept">Filter by</span> <span class="caret"></span>
@@ -58,7 +42,7 @@
                                     </ul>
                                 </div>
                                 <input type="hidden" name="search_param" value="all" id="search_param">
-                                <input type="text" class="form-control" name="x" placeholder="Search Item Here">
+                                <input type="text" class="form-control" name="x" placeholder="Search Item Here" size="80">
                                 <span class="input-group-btn">
                                 <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                                 </span>
@@ -83,51 +67,6 @@
 
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
-
-    <!-- Post item section -->
-    <section>
-        <form enctype="multipart/form-data" action="/post" method="post">
-            <div class="form-group row">
-                <label for="example-text-input" class="col-xs-2 col-form-label">Item</label>
-                <div class="col-xs-10">
-                    <input class="form-control" type="text" name="item" id="example-text-input" required>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="example-number-input" class="col-xs-2 col-form-label">Price</label>
-                <div class="col-xs-10">
-                    <input class="form-control" type="number" name="price" id="example-number-input" required>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="example-search-input" class="col-xs-2 col-form-label">Contract Info</label>
-                <div class="col-xs-10">
-                    <input class="form-control" type="search" name="contract_info"  id="example-search-input" required>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="exampleSelect1" class="col-xs-2 col-form-label">Type</label>
-                <div class="col-xs-10">
-                <select class="form-control" name="type" id="exampleSelect1" required>
-                    <option>Food</option>
-                    <option>Used Item</option>
-                </select>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="exampleTextarea" class="col-xs-2 col-form-label">Description</label>
-                <div class="col-xs-10">
-                <textarea class="form-control" name="description" id="exampleTextarea" rows="3" required></textarea>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label class="col-xs-2 col-form-label">Upload image:</label>
-                <input type="file" name="userPhoto" multiple required>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-    </section>
-    <br>
 
     <!-- Search bar -->
     <div class="row">
