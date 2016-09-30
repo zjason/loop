@@ -92,18 +92,20 @@
         </div>
         <div class="panel-body">
             <% data.forEach(function (feed) { %>
-            <div class="media">
+            <div class="media well col-lg-6">
                 <div class="media-left media-middle">
-                    <a href="#">
-                        <img class="media-object" src="/images/<%= feed.image_name%>" alt="...">
+                    <a href="/images/<%= feed.images[0].image_name %>">
+                        <img class="media-object" src="/images/<%= feed.images[0].image_name %>" alt="...">
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading"><%= feed.item %></h4>
-                    <%= feed.description %>
+                    <h2 class="media-heading"><%= feed.item %></h2>
+                    <h4>Price: $<%= feed.price %></h4>
+                    <p><%= feed.description %></p>
+                    <br>
+                    <form action="/users/itemsold" method="post"><p><button type="submit" name="soldbutton" class="btn btn-primary" role="button" value="<%= feed.id %>">Sold</button></p></form>
                 </div>
             </div>
-            <hr>
             <% }) %>
         </div>
     </div>

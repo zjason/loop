@@ -25,6 +25,7 @@ var sess = {
 
 // connect to mongoDB
 var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/Bburg');
 var db = mongoose.connection;
 

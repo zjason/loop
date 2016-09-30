@@ -3,16 +3,18 @@ var router = express.Router();
 
 // db
 var mongoose = require('mongoose');
+var uniqueValidator = require('mongoose-unique-validator');
 // create schema
 var marketSchema = new mongoose.Schema({
     userid: String,
     item: String,
     description: String,
-    price: Number,
+    price: {type: Number, required: true},
     contract_info: String,
-    type: String,
-    image_name: String
-});
+    type: {type: String, required: true},
+    images: [{image_name: String}]
+}, {timestamps: true});
+
 var Bmarket = mongoose.model("Bmarket", marketSchema);
 
 /* GET home page. */
@@ -22,9 +24,10 @@ router.get('/', function(req, res, next) {
     if (!req.user){
         usertab = "<li><a href='login'>Login/Register</a></li>";
     }else{
+        // req.user.username might be a problem in the future cause front end will render it with html tab
         usertab = "<li><a href='users'>"+ req.user.username+"</a></li>"+"<li><a href='logout'>Logout</a></li>";
     }
-    Bmarket.find({}, function (err, items) {
+    Bmarket.find({}, null, {sort: "price"}, function (err, items) {
         if (items.length){
             itembucket = items;
             console.log(itembucket);
@@ -49,23 +52,32 @@ router.get('/logout', function (req, res, next) {
 /* POST query item */
 router.post('/query', function (req, res, next) {
     var queryResult;
-    if (req.body.type == "All"){
-        Bmarket.find({}, function (err, items) {
+    var usertab = '';
+    if (!req.user){
+        usertab = "<li><a href='login'>Login/Register</a></li>";
+    }else{
+        // req.user.username might be a problem in the future cause front end will render it with html tab
+        usertab = "<li><a href='users'>"+ req.user.username+"</a></li>"+"<li><a href='logout'>Logout</a></li>";
+    }
+    console.log(req.body);
+    if (req.body.search_param == "All"){
+        Bmarket.find({item: {"$regex": req.body.searchbar, "$options": "i"}}, null, {sort: "price"}, function (err, items) {
+            console.log(items);
             if (items.length){
                 queryResult = items;
-                res.render('index',{ title: 'Bburg Market', data: queryResult, message: "" });
+                res.render('index',{ title: 'Bburg Market', usertab: usertab, data: queryResult, message: "" });
             }
         });
     }else {
-        Bmarket.find({type: req.body.type}, function (err, items) {
+        Bmarket.find({type: req.body.search_param, item: {"$regex": req.body.searchbar, "$options": "i"}}, null, {sort: "price"}, function (err, items) {
             if (items.length) {
                 queryResult = items;
                 console.log(items);
-                res.render('index', {title: 'Bburg Market', data: queryResult, message: ""});
+                res.render('index', {title: 'Bburg Market', usertab: usertab, data: queryResult, message: ""});
             } else {
                 console.log('No matching result!');
                 queryResult = [];
-                res.render('index', {title: 'Bburg Market', data: queryResult, message: "No matching result!"});
+                res.render('index', {title: 'Bburg Market', usertab: usertab, data: queryResult, message: "No matching result!"});
             }
         });
     }

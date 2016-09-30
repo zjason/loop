@@ -7,14 +7,15 @@ const saltRounds = 10;
 
 // connect to mongoDB
 var mongoose = require('mongoose');
+var uniqueValidator = require('mongoose-unique-validator');
 
 // create schema
 var UserSchema = new mongoose.Schema({
-    email: String,
-    username: String,
-    password: String
+    email: {type: String, index: true, unique: true, required: true},
+    username: {type: String,  required: true},
+    password: {type: String, required: true}
 });
-
+UserSchema.plugin(uniqueValidator);
 var User = mongoose.model("User", UserSchema);
 
 // passport setup
@@ -72,7 +73,7 @@ router.post('/signup', function(req, res, next){
                     newUser.password = hash;
                     newUser.save();
                 });
-                res.redirect('/');
+                res.redirect('/login');
             }
         });
 });
