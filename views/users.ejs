@@ -28,6 +28,9 @@
                 <ul class="nav navbar-nav">
                     <li><a href="/">Home</a></li>
                 </ul>
+                <ul class="nav navbar-nav navbar-right">
+                <li><a href='logout'>Logout</a></li>
+                </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
@@ -102,7 +105,7 @@
                     <h2 class="media-heading"><%= feed.item %></h2>
                     <h4>Price: $<%= feed.price %></h4>
                     <p><%= feed.description %></p>
-                    <br>
+                    <p>Posted at: <%= feed.createdAt %></p>
                     <form action="/users/itemsold" method="post"><p><button type="submit" name="soldbutton" class="btn btn-primary" role="button" value="<%= feed.id %>">Sold</button></p></form>
                 </div>
             </div>
